@@ -6,8 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -40,7 +42,9 @@ public class StepFragment extends Fragment{
     private ArrayList<Step> stepArrayList = new ArrayList<Step>();
 
     private TextView stepDescriptionTextView;
-    private SimpleExoPlayerView simpleExoPlayerView;
+    private SimpleExoPlayerView stepExoPlayerView;
+    private ImageView stepThumbnailImageView;
+
     private DataSource.Factory mediaDataSourceFactory;
     private DefaultTrackSelector trackSelector;
     private SimpleExoPlayer player;
@@ -78,7 +82,8 @@ public class StepFragment extends Fragment{
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_step, container, false);
         stepDescriptionTextView = view.findViewById(R.id.step_description_tv);
-        simpleExoPlayerView = view.findViewById(R.id.player_view);
+        stepExoPlayerView = view.findViewById(R.id.exo_player_view);
+        stepThumbnailImageView = view.findViewById(R.id.step_thumbnail_iv);
 
         shouldAutoPlay = true;
         bandwidthMeter = new DefaultBandwidthMeter();
@@ -102,10 +107,18 @@ public class StepFragment extends Fragment{
             stepVideoUrl = step.getVideoURL();
             stepThumbnailUrl = step.getThumbnailURL();
 
-            if(stepVideoUrl.equals("") && stepThumbnailUrl.equals("")){
-                simpleExoPlayerView.setVisibility(View.GONE);
+            if(!stepVideoUrl.equals("")){
+                stepThumbnailImageView.setVisibility(View.GONE);
+                stepExoPlayerView.setVisibility(View.VISIBLE);
+            }else if(!stepThumbnailUrl.equals("")){
+                stepExoPlayerView.setVisibility(View.GONE);
+                stepThumbnailImageView.setVisibility(View.VISIBLE);
+                Glide.with(getContext()).load(stepThumbnailUrl)
+                        .dontAnimate()
+                        .into(stepThumbnailImageView);
             }else {
-                simpleExoPlayerView.setVisibility(View.VISIBLE);
+                stepExoPlayerView.setVisibility(View.GONE);
+                stepThumbnailImageView.setVisibility(View.GONE);
             }
         }
 
@@ -122,12 +135,6 @@ public class StepFragment extends Fragment{
                     onResume();
                 }else {
                     initializePlayer(stepVideoUrl);
-                }
-            }else if(!stepThumbnailUrl.equals("")){
-                if(player != null){
-                    onResume();
-                }else {
-                    initializePlayer(stepThumbnailUrl);
                 }
             }else {
                 onResume();
@@ -146,7 +153,7 @@ public class StepFragment extends Fragment{
 
     private void initializePlayer(String videoUrl){
 
-        simpleExoPlayerView.requestFocus();
+        stepExoPlayerView.requestFocus();
 
         TrackSelection.Factory videoTrackSelectionFactory =
                 new AdaptiveTrackSelection.Factory(bandwidthMeter);
@@ -154,7 +161,7 @@ public class StepFragment extends Fragment{
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
         player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
-        simpleExoPlayerView.setPlayer(player);
+        stepExoPlayerView.setPlayer(player);
         player.setPlayWhenReady(shouldAutoPlay);
 
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
@@ -188,8 +195,6 @@ public class StepFragment extends Fragment{
         if ((Util.SDK_INT <= 23 || player == null)) {
             if(!stepVideoUrl.equals("")){
                 initializePlayer(stepVideoUrl);
-            }else if(!stepThumbnailUrl.equals("")){
-                initializePlayer(stepThumbnailUrl);
             }
         }
     }
