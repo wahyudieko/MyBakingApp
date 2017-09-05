@@ -36,62 +36,72 @@ public class MainActivityRecyclerViewTest {
 
     @Test
     public void testClickRecyclerView(){
-        // Click on the RecyclerView item at position 2
+        // Click on the RecyclerView item at position 3
         onView(withId(R.id.recipe_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
 
     }
 
     @Test
     public void testSomeContentRecyclerView(){
-        // Check item at position 2 has "Some content"
+        // Check item at position 1 has "Nutella Pie"
         onView(withRecyclerView(R.id.recipe_recycler_view).atPosition(0))
                 .check(matches(hasDescendant(withText("Nutella Pie"))));
 
-        // Click item at position 2
+        // Click item at position 1
         onView(withRecyclerView(R.id.recipe_recycler_view).atPosition(0)).perform(click());
     }
 
     @Test
     public void testItemClick(){
+
+        // Click item at position 2
         onView(withRecyclerView(R.id.recipe_recycler_view).atPosition(1)).perform(click());
 
+        // Check the result, ingredients text view should be displayed
         onView(withId(R.id.ingredients_textview)).check(matches(isDisplayed()));
     }
 
     @Test
     public void testRecipeNameItemClick(){
+        // Click recycler view item at position 2
         onView(withId(R.id.recipe_recycler_view)).perform(TestUtils.actionOnItemViewAtPosition(1,
                 R.id.recipe_name_tv,
                 click()));
 
+        // Check the result, step recycler view item at position 2 should contain a "Starting prep" step
         String followingText = "Starting prep";
-
         onView(withRecyclerView(R.id.recipe_step_recycler_view).atPositionOnView(1, R.id.recipe_step_name_tv)).check(matches(withText(followingText)));
     }
 
     @Test
     public void testRecipeStepItemClick_IsVideoDisplayed(){
+        // Click recipe recycler view item at position 2
         onView(withId(R.id.recipe_recycler_view)).perform(TestUtils.actionOnItemViewAtPosition(1,
                 R.id.recipe_name_tv,
                 click()));
 
+        // Click recipe step recycler view item at position 1
         onView(withId(R.id.recipe_step_recycler_view)).perform(TestUtils.actionOnItemViewAtPosition(0,
                 R.id.recipe_step_name_tv,
                 click()));
 
+        // Check the result, an exo video view should be displayed in the fragment index 0
         onView(withIndex(withId(R.id.exo_player_view), 0)).check(matches(isDisplayed()));
     }
 
     @Test
     public void testRecipeStepItemClick_IsVideoNotDisplayed(){
+        // Click recipe recycler view item at position 2
         onView(withId(R.id.recipe_recycler_view)).perform(TestUtils.actionOnItemViewAtPosition(1,
                 R.id.recipe_name_tv,
                 click()));
 
+        // Click recipe step recycler view item at position 1
         onView(withId(R.id.recipe_step_recycler_view)).perform(TestUtils.actionOnItemViewAtPosition(0,
                 R.id.recipe_step_name_tv,
                 click()));
 
+        // Check the result, an exo video view should not be displayed in the fragment index 1
         onView(withIndex(withId(R.id.exo_player_view), 1)).check(matches(not(isDisplayed())));
     }
 
