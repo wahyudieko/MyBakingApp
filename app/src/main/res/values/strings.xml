@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Baking App</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="about_activity">About</string>
+
+    <string name="content_authority">com.wahyudieko.bakingapp</string>
+    <string name="android_baking_app_label">Android Baking App</string>
+    <string name="android_baking_app_description">Android Baking App is the best place to find a good recipe that can you cook everyday</string>
+    <string name="app_version">Version 1.0</string>
+    <string name="update_recipe_label">Update Recipe</string>
+    <string name="ingredients_label">Ingredients</string>
+    <string name="how_to_make_label">How to make</string>
+    <string name="empty_recipe_data_label">Recipe data is empty</string>
+    <string name="nav_header_description">Find your favorite recipe here</string>
+    <string name="recipe_step_label"><![CDATA[>>]]></string>
+    <string name="recipes_menu_label">Recipes</string>
+    <string name="about_this_app_label">About this app</string>
+    <string name="about_menu_label">About</string>
+    <string name="share_menu_label">Share</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="all_ingredients_info">All ingredients should be here</string>
+
+</resources>
